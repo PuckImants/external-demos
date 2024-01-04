@@ -1,2 +1,1 @@
-# ovo-training-demos
-Contains notebooks for Ovo Analytics training. - DTA
+# External Training Demos - ML + Vertex AI
