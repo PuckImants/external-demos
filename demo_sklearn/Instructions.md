@@ -32,7 +32,7 @@ fastapi
 uvicorn==0.17.6
 joblib~=1.1.1
 numpy>=1.17.3, <1.24.0
-scikit-learn~=1.0.0
+scikit-learn~=1.2.0
 pandas
 google-cloud-storage>=2.2.1,<3.0.0dev
 google-cloud-aiplatform[prediction]>=1.18.2
