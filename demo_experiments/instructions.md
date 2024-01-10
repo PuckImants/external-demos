@@ -16,7 +16,7 @@ Define the following variables in your notebook:
 ```
 PROJECT_ID
 BUCKET_URI
-VERSION_NAME
+VERSION_NAME # The version of your model
 REGION
 ```
 
@@ -57,10 +57,7 @@ PIPELINE_URI = f"{BUCKET_URI}/pipelines"
 TRAIN_URI = f"{BUCKET_URI}/player_data/data.csv"
 LABEL_URI = f"{BUCKET_URI}/player_data/labels.csv"
 MODEL_URI = f"{BUCKET_URI}/model"
-DISPLAY_NAME = "experiments-demo-gaming-data"
-BQ_DATASET = "player_data"
-BQ_LOCATION = "US"  
-VIEW_NAME = 'dataset_test'
+DISPLAY_NAME = "experiments-demo-gaming-data" 
 PIPELINE_JSON_PKG_PATH = "experiments_demo_gaming_data.json"
 PIPELINE_ROOT = f"gs://{BUCKET_URI}/pipeline_root"
 ```
@@ -187,6 +184,9 @@ def custom_trainer(
         model.add(Dense(100, activation= "relu"))
         model.add(Dense(50, activation= "relu"))
         model.add(Dense(1))
+        # ToDO: define your model. 
+        # The model should have an input layer, 3 hidden layers [500,100,50], the first one should have a dropout layer with rate param['dropout_rate']
+        # The model is a regression model!
             
         model.compile(
         tf.keras.optimizers.Adam(learning_rate= param['learning_rate']),
@@ -199,17 +199,17 @@ def custom_trainer(
 
     # Get Predictions
     def get_predictions(model, test_data):
-
+        # ToDo: return predictions
         return pred
 
     # Evaluate predictions with MAE
     def evaluate_model_mae(pred, test_labels):
-        
+        # ToDo: return mean absolute error
         return mae
     
     # Evaluate predictions with RMSE
     def evaluate_model_rmse(pred, test_labels):
-
+        # ToDo: return root mean squared error
         return rmse    
  
     
@@ -220,6 +220,27 @@ def custom_trainer(
         model_path = f"{model_path}/{model_id}"        
         path(model_path).parent.mkdir(parents=True, exist_ok=True)
         model.save(model_path + '/model_tensorflow')
+    
+            
+    # Main ----------------------------------------------
+    
+    train_data, train_labels, test_data, test_labels = get_data(train_path, label_path)
+    model = train_model(learning_rate, dropout_rate, epochs, train_data,train_labels )
+    pred = get_predictions(model, test_data)
+    mae = evaluate_model_mae(pred, test_labels)
+    rmse = evaluate_model_rmse(pred, test_labels)
+    save_model(model, model_path)
+
+    # Metadata ------------------------------------------
+
+    #convert numpy array to pandas series
+    mae = pd.Series(mae)
+    rmse = pd.Series(rmse)
+
+    #log metrics and model artifacts with ML Metadata. Save metrics as a list. 
+    metrics.log_metric("mae", mae.to_list()) 
+    metrics.log_metric("rmse", rmse.to_list()) 
+    model_metadata.uri = model_uri
 
 ```
 
@@ -262,4 +283,14 @@ runs = [
 
 ### 7 - Submit your pipeline jobs
 
+You should start with 
+
+`for i,run in enumerate(runs):`
+
+and create an `aiplatform.PipelineJob`. 
+
+Make sure to include the experiment name when you submit!
+
 ### 8 - Review your experiment results
+
+Use `aiplatform.get_experiment_df()`.
