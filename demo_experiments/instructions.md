@@ -179,11 +179,7 @@ def custom_trainer(
         # Train tensorflow model
         param = {"learning_rate": learning_rate, "dropout_rate": dropout_rate, "epochs": epochs}
         model = Sequential()
-        model.add(Dense(500, input_dim=train_data.shape[1], activation= "relu"))
-        model.add(Dropout(param['dropout_rate']))
-        model.add(Dense(100, activation= "relu"))
-        model.add(Dense(50, activation= "relu"))
-        model.add(Dense(1))
+
         # ToDO: define your model. 
         # The model should have an input layer, 3 hidden layers [500,100,50], the first one should have a dropout layer with rate param['dropout_rate']
         # The model is a regression model!
