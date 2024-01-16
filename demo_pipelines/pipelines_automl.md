@@ -112,3 +112,10 @@ model and endpoint will need to point to the relevent outputs of the training an
 ## 3. Create and submit your pipeline job. 
 
 This is done in the same way as the intro hands-on.
+
+
+## 4. While you wait, a final challenge. 
+
+Run the `solution_cnn.ipynb`, editing the constants for your project, etc. This submits the cnn training task we have been working with as a vertex pipeline. We get experiments built into the pipeline, and can string model training, registering and deployment together. 
+
+Can you convert the cnn challenge to a pipeline? The task.py is included. You will need to convert this into a custom component. Please check the solutions notebook in this directory if you need a hint!
