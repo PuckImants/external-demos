@@ -113,3 +113,6 @@ We can now run our pipeline in a serverless manner in Vertex. To do so, create a
 
 Check your pipeline in the Vertex UI. Any questions, just shout!
 
+## 6. Bonus - Add experiments
+
+add an `experiment` parameter to your `job.submit`, and resubmit to see your parameters get automatically logged in an experiment!
